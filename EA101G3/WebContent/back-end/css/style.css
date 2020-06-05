@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Pacifico&family=Righteous&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+/**{
+    margin: 0;
+    padding: 0;
+    }*/
+
+    html,body{
+        background-image: url(shiba-inu.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+    }
+
+    /*上方導覽列*/
+
+    .navbar{ 
+
+
+
+        height: 80px;
+        font-size: 35px;
+        color: lightcoral;
+        box-shadow: 0px 0px 8px black;
+        background-color: #42454C;
+
+
+    } 
+    .container-xl{ 
+       position: relative;
+       top: 80px;
+
+   }
+
+
+   .action .nav-item .nav-link{
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 20px;
+    color: #00E8E8;
+
+}
+
+
+/*導覽列標題*/
+
+.navbarTitle{ 
+    font-family: 'Noto Sans TC', sans-serif;
+
+    /*  margin-left:-140px; */
+    font-size: 30px;
+
+
+}
+/*會員登入後照片*/
+.mem-pic{ 
+    width: 45px;
+    height: 45px;
+    border-radius: 20px;
+    margin-left: 5px;
+}
+/*會員登入後姓名*/
+.mem-name{ 
+    font-size: 16px;
+    opacity: 0.7;
+
+    
+}
+/*右上功能列*/
+.action{ 
+    float: right;
+
+
+}
+
+
+
+
+/*側邊欄*/
+div.aside{ 
+
+    line-height: 45px;
+    font-size: 20px;
+    /*background-color: #4A78A8;  */
+    padding-top:15px; 
+}
+
+/*側邊欄文字靠左*/
+.nav .nav-item{ 
+
+    text-align: left;
+
+    
+}
+/*側邊欄內清單*/
+.nav .nav-item .nav-link{ 
+    letter-spacing: 8px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: white;
+    opacity: 0.9;
+    border-bottom:dotted;
+    border-width: 2px;
+    border-color: rgba(255,255,255,0.3);
+    /*以上預設*/
+
+
+    height:50px;
+    padding-top:5px;
+    overflow:hidden;
+    line-height: 35px;
+    transition: all 0.5s;
+}
+/*側邊欄內清單(單一功能)*/
+.nav .nav-item-single a{ 
+    letter-spacing: 8px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: white;
+    opacity: 0.9;
+    border-bottom:dotted;
+    border-width: 2px;
+    border-color: rgba(255,255,255,0.3);
+    height:50px;
+    line-height: 35px;
+    padding-top:5px;
+}
+
+/*側邊欄內清單hover*/
+.nav .nav-item .nav-link:hover{ 
+    height: 180px;
+    cursor: pointer;
+    background-color: rgba(200, 200, 200, 0.3);
+
+
+}
+/*
+.nav-link li{
+    display: block;
+    font-size: 16px;
+    letter-spacing: 1px;
+    transition: all 0.8s;
+}
+*/
+
+/*側邊欄內清單的第二層清單*/
+.nav-link ul li{
+    display: block;
+    font-size: 16px;
+    letter-spacing: 1px;
+    transition: all 0.8s;
+  
+
+}
+
+/*側邊欄內清單的第二層清單連結*/
+
+.nav-link ul li a{
+
+    color: white;
+
+}
+
+/*側邊欄內清單(單一功能)連結*/
+
+.nav .nav-item-single a{ 
+    letter-spacing: 8px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: white;
+    opacity: 0.9;
+    border-bottom:dotted;
+    border-width: 2px;
+    border-color: rgba(255,255,255,0.3);
+    height:50px;
+    width:100%;
+    line-height: 35px;
+    padding-top:5px;
+}
+/*側邊欄內清單(單一功能)連結hover*/
+.nav .nav-item-single a:hover{ 
+    cursor: pointer;
+    background-color: rgba(200, 200, 200, 0.3);
+
+
+}
+
+/*導覽列圖標*/
+.icon{ 
+
+    font-family: 'Pacifico';
+    font-size: 38px;
+    color: lightcoral !important;
+    text-shadow: 1px 0px 2px black;
+
+
+}
+
+
+/*主內容標題下分隔線*/
+hr.mainTitlehr {
+    border: 1px solid lightcoral;
+
+
+}
+
+/*主內容標題*/
+div.mainTitle{
+    letter-spacing: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: #42454C;
+    font-weight: bold;
+    font-size: 24px;
+    padding-left: 20px;
+
+}
+/*主內容*/
+div.main{ 
+    font-family: 'Noto Sans TC', sans-serif;
+    padding:20px 10px 20px 10px; 
+    float: left;
+    min-height: 100%;
+    background:rgba(255,255,255,0.9);
+    padding-bottom: 100px;
+    text-align: left;   
+
+
+}
+
+/*表格樣式*/
+table { 
+    width: 90%;
+    background-color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+table, th, td {
+    border: 1px solid #CCCCFF;
+}
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+
+/*頁尾*/
+footer{ 
+    float: left;
+    height: 100px;
+    width: 100%;
+    background-color: rgba(200, 200, 200, 0.9);
+    color: grey;
+    text-align: center;
+    padding-top:40px;
+
+}
+
+

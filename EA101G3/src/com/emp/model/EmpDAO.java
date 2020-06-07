@@ -1,6 +1,7 @@
 package com.emp.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,12 +26,29 @@ public class EmpDAO implements EmpDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO emp2 (empno,ename,job,hiredate,sal,comm,deptno) VALUES (emp2_seq.NEXTVAL, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT empno,ename,job,to_char(hiredate,'yyyy-mm-dd') hiredate,sal,comm,deptno FROM emp2 order by empno";
-	private static final String GET_ONE_STMT = "SELECT empno,ename,job,to_char(hiredate,'yyyy-mm-dd') hiredate,sal,comm,deptno FROM emp2 where empno = ?";
-	private static final String DELETE = "DELETE FROM emp2 where empno = ?";
-	private static final String UPDATE = "UPDATE emp2 set ename=?, job=?, hiredate=?, sal=?, comm=?, deptno=? where empno = ?";
+	private static final String INSERT_STMT = 
+			"INSERT INTO EMPLOYEE (empID,empName,empGender,empBirth,empJob,empPhone,empAddress,"
+			+ "empAcc,empPwd,empPic,hiredate,quitdate,empStatus) VALUES (emp_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	private static final String GET_ALL_STMT = 
+			"SELECT empID,empName,empGender,to_char(empBirth,'yyyy-mm-dd') empBirth,empJob,empPhone,empAddress,empAcc,"
+			+ "empPwd,empPic,to_char(hiredate,'yyyy-mm-dd') hiredate,to_char(quitdate,'yyyy-mm-dd') quitdate,empStatus FROM EMPLOYEE order by empID";
+	
+	private static final String GET_ONE_STMT = 
+			"SELECT empID,empName,empGender,to_char(empBirth,'yyyy-mm-dd') empBirth,empJob,empPhone,empAddress,empAcc,"
+			+ "empPwd,empPic,to_char(hiredate,'yyyy-mm-dd') hiredate,to_char(quitdate,'yyyy-mm-dd') quitdate,empStatus FROM EMPLOYEE where empID = ?";
+		
+	private static final String DELETE = 
+			"DELETE FROM EMPLOYEE where empID = ?";
+	
+	private static final String UPDATE = 
+			"UPDATE EMPLOYEE set empName=?,empGender=?,empBirth=?,empJob=?,empPhone=?,empAddress=?,empAcc=?," + 
+			"empPwd=?,empPic=?,hiredate=?,quitdate=?,empStatus=? where empId = ?";
 
+	
+
+	
+	
 	@Override
 	public void insert(EmpVO empVO) {
 		// TODO Auto-generated method stub
@@ -42,12 +60,19 @@ public class EmpDAO implements EmpDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-//			pstmt.setString(1, empVO.getEname());
-//			pstmt.setString(2, empVO.getJob());
-//			pstmt.setDate(3, empVO.getHiredate());
-//			pstmt.setDouble(4, empVO.getSal());
-//			pstmt.setDouble(5, empVO.getComm());
-//			pstmt.setInt(6, empVO.getDeptno());
+			pstmt.setInt(1, empVO.getEmpID());
+			pstmt.setString(2, empVO.getEmpName());
+			pstmt.setString(3, empVO.getEmpGender());
+			pstmt.setDate(4, empVO.getEmpBirth());
+			pstmt.setString(5, empVO.getEmpJob());
+			pstmt.setString(6, empVO.getEmpPhone());
+			pstmt.setString(7, empVO.getEmpAddress());
+			pstmt.setString(8, empVO.getEmpAcc());
+			pstmt.setString(9, empVO.getEmpPwd());
+			pstmt.setBytes(10, empVO.getEmpPic());
+			pstmt.setDate(11, empVO.getHiredate());
+			pstmt.setDate(12, empVO.getQuitdate());
+			pstmt.setInt(13, empVO.getEmpStatus());
 
 			pstmt.executeUpdate();
 
@@ -85,13 +110,20 @@ public class EmpDAO implements EmpDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-//			pstmt.setString(1, empVO.getEname());
-//			pstmt.setString(2, empVO.getJob());
-//			pstmt.setDate(3, empVO.getHiredate());
-//			pstmt.setDouble(4, empVO.getSal());
-//			pstmt.setDouble(5, empVO.getComm());
-//			pstmt.setInt(6, empVO.getDeptno());
-//			pstmt.setInt(7, empVO.getEmpno());
+			
+			pstmt.setString(1, empVO.getEmpName());
+			pstmt.setString(2, empVO.getEmpGender());
+			pstmt.setDate(3, empVO.getEmpBirth());
+			pstmt.setString(4, empVO.getEmpJob());
+			pstmt.setString(5, empVO.getEmpPhone());
+			pstmt.setString(6, empVO.getEmpAddress());
+			pstmt.setString(7, empVO.getEmpAcc());
+			pstmt.setString(8, empVO.getEmpPwd());
+			pstmt.setBytes(9, empVO.getEmpPic());
+			pstmt.setDate(10, empVO.getHiredate());
+			pstmt.setDate(11, empVO.getQuitdate());
+			pstmt.setInt(12, empVO.getEmpStatus());
+			pstmt.setInt(13, empVO.getEmpID());
 
 			pstmt.executeUpdate();
 
@@ -119,7 +151,7 @@ public class EmpDAO implements EmpDAO_interface {
 	}
 
 	@Override
-	public void delete(Integer empId) {
+	public void delete(Integer empID) {
 		// TODO Auto-generated method stub
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -129,7 +161,7 @@ public class EmpDAO implements EmpDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(DELETE);
 
-			pstmt.setInt(1, empId);
+			pstmt.setInt(1, empID);
 
 			pstmt.executeUpdate();
 
@@ -157,7 +189,7 @@ public class EmpDAO implements EmpDAO_interface {
 	}
 
 	@Override
-	public EmpVO findByPrimaryKey(Integer empId) {
+	public EmpVO findByPrimaryKey(Integer empID) {
 		// TODO Auto-generated method stub
 		EmpVO empVO = null;
 		Connection con = null;
@@ -169,20 +201,25 @@ public class EmpDAO implements EmpDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
-			pstmt.setInt(1, empId);
+			pstmt.setInt(1, empID);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects
 				empVO = new EmpVO();
-//				empVO.setEmpno(rs.getInt("empno"));
-//				empVO.setEname(rs.getString("ename"));
-//				empVO.setJob(rs.getString("job"));
-//				empVO.setHiredate(rs.getDate("hiredate"));
-//				empVO.setSal(rs.getDouble("sal"));
-//				empVO.setComm(rs.getDouble("comm"));
-//				empVO.setDeptno(rs.getInt("deptno"));
+				empVO.setEmpName(rs.getString("empName"));
+				empVO.setEmpGender(rs.getString("empGender"));
+				empVO.setEmpBirth(rs.getDate("empBirth"));
+				empVO.setEmpJob(rs.getString("empJob"));
+				empVO.setEmpPhone(rs.getString("empPhone"));
+				empVO.setEmpAddress(rs.getString("empAddress"));
+				empVO.setEmpAcc(rs.getString("empJob"));
+				empVO.setEmpPwd(rs.getString("empPhone"));
+				empVO.setEmpPic(rs.getBytes("empPic"));
+				empVO.setHiredate(rs.getDate("hiredate"));
+				empVO.setQuitdate(rs.getDate("quitdate"));
+				empVO.setEmpStatus(rs.getInt("empStatus"));
 			}
 
 			// Handle any driver errors
@@ -234,13 +271,19 @@ public class EmpDAO implements EmpDAO_interface {
 			while (rs.next()) {
 				// empVO 也稱為 Domain objects
 				empVO = new EmpVO();
-//				empVO.setEmpno(rs.getInt("empno"));
-//				empVO.setEname(rs.getString("ename"));
-//				empVO.setJob(rs.getString("job"));
-//				empVO.setHiredate(rs.getDate("hiredate"));
-//				empVO.setSal(rs.getDouble("sal"));
-//				empVO.setComm(rs.getDouble("comm"));
-//				empVO.setDeptno(rs.getInt("deptno"));
+				empVO.setEmpID(rs.getInt("empID"));
+				empVO.setEmpName(rs.getString("empName"));
+				empVO.setEmpGender(rs.getString("empGender"));
+				empVO.setEmpBirth(rs.getDate("empBirth"));
+				empVO.setEmpJob(rs.getString("empJob"));
+				empVO.setEmpPhone(rs.getString("empPhone"));
+				empVO.setEmpAddress(rs.getString("empAddress"));
+				empVO.setEmpAcc(rs.getString("empJob"));
+				empVO.setEmpPwd(rs.getString("empPhone"));
+				empVO.setEmpPic(rs.getBytes("empPic"));
+				empVO.setHiredate(rs.getDate("hiredate"));
+				empVO.setQuitdate(rs.getDate("quitdate"));
+				empVO.setEmpStatus(rs.getInt("empStatus"));
 				list.add(empVO); // Store the row in the list
 			}
 

@@ -10,10 +10,15 @@ public class EmpVO implements java.io.Serializable{
 	private String empJob;
 	private String empPhone;
 	private String empAddress;
+	private String empAcc;
 	private String empPwd;
 	private byte[] empPic;
 	private Date hiredate;
 	private Date quitdate;
+	private Integer empStatus;
+	
+	
+	
 	public Integer getEmpID() {
 		return empID;
 	}
@@ -56,6 +61,12 @@ public class EmpVO implements java.io.Serializable{
 	public void setEmpAddress(String empAddress) {
 		this.empAddress = empAddress;
 	}
+	public String getEmpAcc() {
+		return empAcc;
+	}
+	public void setEmpAcc(String empAcc) {
+		this.empAcc = empAcc;
+	}
 	public String getEmpPwd() {
 		return empPwd;
 	}
@@ -79,6 +90,12 @@ public class EmpVO implements java.io.Serializable{
 	}
 	public void setQuitdate(Date quitdate) {
 		this.quitdate = quitdate;
+	}
+	public Integer getEmpStatus() {
+		return empStatus;
+	}
+	public void setEmpStatus(Integer empStatus) {
+		this.empStatus = empStatus;
 	}
 
 }

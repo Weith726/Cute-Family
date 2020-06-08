@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 
 public class EmpDAO implements EmpDAO_interface {
 
-	// ¤@­ÓÀ³¥Îµ{¦¡¤¤,°w¹ï¤@­Ó¸ê®Æ®w ,¦@¥Î¤@­ÓDataSource§Y¥i
+	// ä¸€å€‹æ‡‰ç”¨ç¨‹å¼ä¸­,é‡å°ä¸€å€‹è³‡æ–™åº« ,å…±ç”¨ä¸€å€‹DataSourceå³å¯
 	private static DataSource ds = null;
 	static {
 		try {
@@ -206,7 +206,7 @@ public class EmpDAO implements EmpDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// empVo ¤]ºÙ¬° Domain objects
+				// empVo ä¹Ÿç¨±ç‚º Domain objects
 				empVO = new EmpVO();
 				empVO.setEmpName(rs.getString("empName"));
 				empVO.setEmpGender(rs.getString("empGender"));
@@ -269,7 +269,7 @@ public class EmpDAO implements EmpDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// empVO ¤]ºÙ¬° Domain objects
+				// empVO ä¹Ÿç¨±ç‚º Domain objects
 				empVO = new EmpVO();
 				empVO.setEmpID(rs.getInt("empID"));
 				empVO.setEmpName(rs.getString("empName"));

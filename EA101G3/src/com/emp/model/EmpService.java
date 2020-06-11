@@ -7,7 +7,7 @@ public class EmpService {
 	private EmpDAO_interface dao;
 
 	public EmpService() {
-		dao = new EmpDAO();
+		dao = new EmpJDBCDAO();
 	}
 
 	public EmpVO addEmp(String empName, String empGender, java.sql.Date empBirth,

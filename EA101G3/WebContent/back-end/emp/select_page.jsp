@@ -19,10 +19,12 @@
     color: red;
     display: block;
     margin-bottom: 1px;
+     text-align: center;
   }
   h4 {
     color: blue;
     display: inline;
+     text-align: center;
   }
 </style>
 

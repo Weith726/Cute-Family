@@ -11,7 +11,6 @@ import com.emp.model.*;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class EmpServlet extends HttpServlet {
-	String saveDirectory = "/images_uploaded"; // 上傳檔案的目地目錄;
 	   // 將由底下的第26~30行用 java.io.File 於 ContextPath 之下, 自動建立目地目錄
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
@@ -160,8 +159,10 @@ public class EmpServlet extends HttpServlet {
 					errorMsgs.add("員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
 	            }
 				
+				
 				String empGender = req.getParameter("empGender");
 				if (empGender == null) {
+					empGender = "男";
 					errorMsgs.add("請選擇一個性別");
 				}
 				
@@ -182,9 +183,12 @@ public class EmpServlet extends HttpServlet {
 				}
 				
 				String empPhone = req.getParameter("empPhone").trim();
+				String empPhoneReg = "^[(0-9)]{9,11}$";
 				if (empPhone == null || empPhone.trim().length() == 0) {
 					errorMsgs.add("電話請勿空白");
-				}
+				}else if(!empPhone.trim().matches(empPhoneReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("電話只能是數字 , 且長度不能大於11碼");
+	            }
 				
 				String empAddress = req.getParameter("empAddress").trim();
 				if (empAddress == null || empAddress.trim().length() == 0) {
@@ -203,7 +207,9 @@ public class EmpServlet extends HttpServlet {
 				
 				//這行有問題
 				byte[] empPic =null;
+				empPic = getPictureByteArray("C:\\c.jpg");
 				
+
 			
 				java.sql.Date hiredate = null;
 				try {
@@ -216,14 +222,6 @@ public class EmpServlet extends HttpServlet {
 				}
 				
 				java.sql.Date quitdate = null;
-				try {
-					//將前端日期字串轉成JAVA Date物件
-					quitdate = java.sql.Date.valueOf(req.getParameter("quitdate").trim());
-				} catch (IllegalArgumentException e) {
-					//例外把日期設為今天日期
-					quitdate=new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期!");
-				}
 				
 				
 				
@@ -261,7 +259,7 @@ req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也�
 				/***************************2.開始新增資料***************************************/
 				EmpService empSvc = new EmpService();
 				empVO = empSvc.addEmp(empName,empGender,empBirth,
-						 empJob,  empPhone,  empAddress,  empAcc,  empPwd,
+						 empJob,  empPhone, empAddress,  empAcc,  empPwd,
 						 empPic, hiredate, quitdate,  empStatus);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
@@ -271,7 +269,8 @@ req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也�
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
+				errorMsgs.add(e.getMessage()+"其他的錯誤");
+				System.out.println("我的錯");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/emp/addEmp.jsp");
 				failureView.forward(req, res);
@@ -280,6 +279,20 @@ req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也�
 		
 		
 	
+	}
+	public static byte[] getPictureByteArray(String path) throws IOException {
+		File file = new File(path);
+		FileInputStream fis = new FileInputStream(file);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		byte[] buffer = new byte[8192];
+		int i;
+		while ((i = fis.read(buffer)) != -1) {
+			baos.write(buffer, 0, i);
+		}
+		baos.close();
+		fis.close();
+
+		return baos.toByteArray();
 	}
 	
 }

@@ -60,20 +60,18 @@ public class EmpDAO implements EmpDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, empVO.getEmpID());
-			pstmt.setString(2, empVO.getEmpName());
-			pstmt.setString(3, empVO.getEmpGender());
-			pstmt.setDate(4, empVO.getEmpBirth());
-			pstmt.setString(5, empVO.getEmpJob());
-			pstmt.setString(6, empVO.getEmpPhone());
-			pstmt.setString(7, empVO.getEmpAddress());
-			pstmt.setString(8, empVO.getEmpAcc());
-			pstmt.setString(9, empVO.getEmpPwd());
-//			pstmt.setBytes(10, empVO.getEmpPic());
-			pstmt.setDate(11, empVO.getHiredate());
-			pstmt.setDate(12, empVO.getQuitdate());
-			pstmt.setInt(13, empVO.getEmpStatus());
-
+			pstmt.setString(1, empVO.getEmpName());
+			pstmt.setString(2, empVO.getEmpGender());
+			pstmt.setDate(3, empVO.getEmpBirth());
+			pstmt.setString(4, empVO.getEmpJob());
+			pstmt.setString(5, empVO.getEmpPhone());
+			pstmt.setString(6, empVO.getEmpAddress());
+			pstmt.setString(7, empVO.getEmpAcc());
+			pstmt.setString(8, empVO.getEmpPwd());
+			pstmt.setBytes(9, empVO.getEmpPic());
+			pstmt.setDate(10, empVO.getHiredate());
+			pstmt.setDate(11, empVO.getQuitdate());
+			pstmt.setInt(12, empVO.getEmpStatus());
 			pstmt.executeUpdate();
 
 			// Handle any SQL errors

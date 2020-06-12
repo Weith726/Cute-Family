@@ -21,6 +21,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>EmpServlet</servlet-name>
-    <url-pattern>/emp/emp.do</url-pattern>
+    <url-pattern>/back-end/emp/emp.do</url-pattern>
   </servlet-mapping>
 </web-app>

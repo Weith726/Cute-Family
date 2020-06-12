@@ -69,7 +69,7 @@ public class EmpDAO implements EmpDAO_interface {
 			pstmt.setString(7, empVO.getEmpAddress());
 			pstmt.setString(8, empVO.getEmpAcc());
 			pstmt.setString(9, empVO.getEmpPwd());
-			pstmt.setBytes(10, empVO.getEmpPic());
+//			pstmt.setBytes(10, empVO.getEmpPic());
 			pstmt.setDate(11, empVO.getHiredate());
 			pstmt.setDate(12, empVO.getQuitdate());
 			pstmt.setInt(13, empVO.getEmpStatus());

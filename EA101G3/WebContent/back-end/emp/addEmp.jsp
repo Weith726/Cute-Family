@@ -5,8 +5,7 @@
 <%
   EmpVO empVO = (EmpVO) request.getAttribute("empVO");
 %>
-<!-- 102行 ${empVO.deptno}可以把其他錯誤後重新導向的部門已選擇值傳回去-->
-<%= empVO==null %>--${empVO.deptno}--
+
 
 <html>
 <head>
@@ -32,7 +31,7 @@
 
 <style>
   table {
-	width: 450px;
+	width: 100%;
 	background-color: white;
 	margin-top: 1px;
 	margin-bottom: 1px;
@@ -51,7 +50,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料新增 - addEmp.jsp</h3></td><td>
-		 <h4><a href="select_page.jsp"><img src="images/tomcat.png" width="100" height="100" border="0">回首頁</a></h4>
+		 <h4><a href="select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -67,42 +66,80 @@
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="emp.do" name="form1">
+<FORM METHOD="post" ACTION="emp.do" name="form1" enctype="multipart/form-data">
 <table>
 	<tr>
 		<td>員工姓名:</td>
-		<td><input type="TEXT" name="ename" size="45" 
-			 value="<%= (empVO==null)? "吳永志" : empVO.getEname()%>" /></td>
+		<td><input type="TEXT" name="empName" size="45" 
+			 value="<%= (empVO==null)? "吳永志" : empVO.getEmpName()%>" /></td>
 	</tr>
+	
+	<tr>
+		<td>性別:</td>
+		<td>
+  <input type="radio" id="male" name="empGender" value="男" checked>
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="empGender" value="女">
+  <label for="female">Female</label><br></td>
+	</tr>
+	
+	<tr>
+		<td>生日:</td>
+		<td><input name="empBirth" id="f_date1" type="text"></td>
+	</tr>
+	
 	<tr>
 		<td>職位:</td>
-		<td><input type="TEXT" name="job" size="45"
-			 value="<%= (empVO==null)? "MANAGER" : empVO.getJob()%>" /></td>
+		<td><input type="TEXT" name="empJob" size="45"
+			 value="<%= (empVO==null)? "行政助理" : empVO.getEmpJob()%>" /></td>
+	</tr>
+	
+	<tr>
+		<td>電話:</td>
+		<td><input type="TEXT" name="empPhone" size="45"
+			 value="<%= (empVO==null)? "" : empVO.getEmpPhone()%>" /></td>
 	</tr>
 	<tr>
-		<td>雇用日期:</td>
-		<td><input name="hiredate" id="f_date1" type="text"></td>
+		<td>地址:</td>
+		<td><input type="TEXT" name="empAddress" size="100"
+			 value="<%= (empVO==null)? "" : empVO.getEmpAddress()%>" /></td>
 	</tr>
+	
 	<tr>
-		<td>薪水:</td>
-		<td><input type="TEXT" name="sal" size="45"
-			 value="<%= (empVO==null)? "10000" : empVO.getSal()%>" /></td>
+		<td>帳號:</td>
+		<td><input type="TEXT" name="empAcc" size="45"
+			 value="<%= (empVO==null)? "" : empVO.getEmpAcc()%>" /></td>
 	</tr>
+	
 	<tr>
-		<td>獎金:</td>
-		<td><input type="TEXT" name="comm" size="45"
-			 value="<%= (empVO==null)? "100" : empVO.getComm()%>" /></td>
+		<td>密碼:</td>
+		<td><input type="password" name="empPwd" size="45"
+			 value="<%= (empVO==null)? "" : empVO.getEmpPwd()%>" /></td>
 	</tr>
+	
+	<tr>
+		<td>到職日:</td>
+		<td><input name="hiredate" id="f_date2" type="text"></td>
+	</tr>
+	
+	<tr>
+		<td>離職日:</td>
+		<td><input name="quitdate" id="f_date3" type="text"></td>
+	</tr>
+	
+	<tr>
+		<td>員工狀態:</td>
+		<td><input type="text" name="empStatus" size="5"
+			 value="<%= (empVO==null)? "" : empVO.getEmpStatus()%>" /></td>
+	</tr>
+	
+	<tr>
+		<td>員工照片:</td>
+		<td><input type="file" name="empPic"></td>
+	</tr>
+	
 
-	<jsp:useBean id="deptSvc" scope="page" class="com.dept.model.DeptService" />
-	<tr>
-		<td>部門:<font color=red><b>*</b></font></td>
-		<td><select size="1" name="deptno">
-			<c:forEach var="deptVO" items="${deptSvc.all}">
-				<option value="${deptVO.deptno}" ${(empVO.deptno==deptVO.deptno)? 'selected':'' } >${deptVO.dname}
-			</c:forEach>
-		</select></td>
-	</tr>
+	
 
 </table>
 <br>
@@ -115,6 +152,15 @@
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
 <% 
+  java.sql.Date empBirth = null;
+  try {
+	  empBirth = empVO.getEmpBirth(); //非空值存到hiredate
+   } catch (Exception e) {
+	   empBirth = new java.sql.Date(System.currentTimeMillis()); //空值給今天日期
+   }
+%>
+
+<% 
   java.sql.Date hiredate = null;
   try {
 	    hiredate = empVO.getHiredate(); //非空值存到hiredate
@@ -122,9 +168,18 @@
 	    hiredate = new java.sql.Date(System.currentTimeMillis()); //空值給今天日期
    }
 %>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+
+<% 
+  java.sql.Date quitdate = null;
+  try {
+	  quitdate = empVO.getQuitdate(); //非空值存到hiredate
+   } catch (Exception e) {
+	   quitdate = new java.sql.Date(System.currentTimeMillis()); //空值給今天日期
+   }
+%>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.full.js"></script>
 
 <style>
   .xdsoft_datetimepicker .xdsoft_datepicker {
@@ -142,7 +197,32 @@
 	       timepicker:false,       //timepicker:true,
 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
+		   value: '<%=empBirth%>', // value:   new Date(),
+           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+           startDate:	            '1980/01/01',  // 起始日
+           //minDate:               '-1970-01-01', // 去除今日(不含)之前
+           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+        });
+        
+        $.datetimepicker.setLocale('zh');
+        $('#f_date2').datetimepicker({
+	       theme: '',              //theme: 'dark',
+	       timepicker:false,       //timepicker:true,
+	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
 		   value: '<%=hiredate%>', // value:   new Date(),
+           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+           //startDate:	            '2017/07/10',  // 起始日
+           //minDate:               '-1970-01-01', // 去除今日(不含)之前
+           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+        });
+        $.datetimepicker.setLocale('zh');
+        $('#f_date3').datetimepicker({
+	       theme: '',              //theme: 'dark',
+	       timepicker:false,       //timepicker:true,
+	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
+		   value: '<%=quitdate%>', // value:   new Date(),
            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
            //startDate:	            '2017/07/10',  // 起始日
            //minDate:               '-1970-01-01', // 去除今日(不含)之前

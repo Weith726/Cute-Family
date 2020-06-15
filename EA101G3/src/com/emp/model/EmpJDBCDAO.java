@@ -308,28 +308,39 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 		EmpJDBCDAO dao = new EmpJDBCDAO();
 
 		// 新增
-//		EmpVO empVO1 = new EmpVO();
-//		empVO1.setEname("吳永志1");
-//		empVO1.setJob("MANAGER");
-//		empVO1.setHiredate(java.sql.Date.valueOf("2005-01-01"));
-//		empVO1.setSal(new Double(50000));
-//		empVO1.setComm(new Double(500));
-//		empVO1.setDeptno(10);
-//		dao.insert(empVO1);
-//
+//		EmpVO empVO = new EmpVO();
+//		empVO.setEmpName("吳永志");
+//		empVO.setEmpGender("男");
+//		empVO.setEmpBirth(java.sql.Date.valueOf("1992-01-01"));
+//		empVO.setEmpJob("獸醫");
+//		empVO.setEmpPhone("0979282001");
+//		empVO.setEmpAddress("台北市XXX");
+//		empVO.setEmpAcc("wu123456");
+//		empVO.setEmpPwd("wu123456");
+//		empVO.setEmpPic();
+//		empVO.setHiredate(java.sql.Date.valueOf("2020-01-01"));
+//		empVO.setEmpStatus(1);
+//		dao.insert(empVO);
+
 //		// 修改
-//		EmpVO empVO2 = new EmpVO();
-//		empVO2.setEmpno(7001);
-//		empVO2.setEname("吳永志2");
-//		empVO2.setJob("MANAGER2");
-//		empVO2.setHiredate(java.sql.Date.valueOf("2002-01-01"));
-//		empVO2.setSal(new Double(20000));
-//		empVO2.setComm(new Double(200));
-//		empVO2.setDeptno(20);
-//		dao.update(empVO2);
+//		EmpVO empVO = new EmpVO();
+//		empVO.setEmpID(1021);
+//		empVO.setEmpName("吳永志");
+//		empVO.setEmpGender("男");
+//		empVO.setEmpBirth(java.sql.Date.valueOf("1992-01-01"));
+//		empVO.setEmpJob("獸醫");
+//		empVO.setEmpPhone("0979282001");
+//		empVO.setEmpAddress("台北市XXX");
+//		empVO.setEmpAcc("wu123456");
+//		empVO.setEmpPwd("wu123456");
+//		empVO.setEmpPic();
+//		empVO.setHiredate(java.sql.Date.valueOf("2020-01-01"));
+//		empVO.setQuitdate(java.sql.Date.valueOf("2020-01-02"));
+//		empVO.setEmpStatus(3);
+//		dao.update(empVO);
 //
 //		// 刪除
-//		dao.delete(7014);
+//		dao.delete(1020);
 //
 //		// 查詢
 //		EmpVO empVO3 = dao.findByPrimaryKey(7001);
@@ -351,7 +362,13 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 			System.out.print(aEmp.getEmpBirth() + ",");
 			System.out.print(aEmp.getEmpJob() + ",");
 			System.out.print(aEmp.getEmpPhone() + ",");
-			System.out.print(aEmp.getEmpAddress());
+			System.out.print(aEmp.getEmpAddress()+",");
+			System.out.print(aEmp.getEmpAcc() + ",");
+			System.out.print(aEmp.getEmpPwd() + ",");
+			System.out.print(aEmp.getEmpPic() + ",");
+			System.out.print(aEmp.getHiredate() + ",");
+			System.out.print(aEmp.getQuitdate() + ",");
+			System.out.print(aEmp.getEmpStatus());
 			System.out.println();
 		}
 	}

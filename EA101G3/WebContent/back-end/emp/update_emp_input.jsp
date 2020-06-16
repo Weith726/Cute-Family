@@ -3,15 +3,12 @@
 <%@ page import="com.emp.model.*"%>
 
 <%
-	EmpVO empVO = (EmpVO) request.getAttribute("empVO");
+	EmpVO empVO = (EmpVO) request.getAttribute("empVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
 %>
-
-
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title>員工資料新增 - addEmp.jsp</title>
-
+<title>員工資料修改 - update_emp_input.jsp</title>
 
 <style>
 table {
@@ -46,7 +43,7 @@ th, td {
 </head>
 <body bgcolor='white'>
 
-	<span class="mainTitle">員工資料新增</span>
+	<span class="mainTitle">員工資料修改</span>
 
 	<a href="select_page.jsp">回首頁</a>
 
@@ -67,9 +64,14 @@ th, td {
 		enctype="multipart/form-data">
 		<table>
 			<tr>
+				<th>員工編號:<font color=red><b>*</b></font></th>
+				<td><%=empVO.getEmpID()%></td>
+			</tr>
+
+			<tr>
 				<th>員工姓名:</th>
 				<td><input type="TEXT" name="empName" size="10"
-					value="<%=(empVO == null) ? "" : empVO.getEmpName()%>" /></td>
+					value="<%=empVO.getEmpName()%>" /></td>
 			</tr>
 
 			<tr>
@@ -81,41 +83,49 @@ th, td {
 
 			<tr>
 				<th>生日:</th>
-				<td><input name="empBirth" id="f_date1" type="text"></td>
+				<td><input name="empBirth" id="f_date1" type="text"
+					value="<%=empVO.getEmpBirth()%>" /></td>
 			</tr>
 
 			<tr>
 				<th>職位:</th>
 				<td><input type="TEXT" name="empJob" size="10"
-					value="<%=(empVO == null) ? "" : empVO.getEmpJob()%>" /></td>
+					value="<%=empVO.getEmpJob()%>" /></td>
 			</tr>
 
 			<tr>
 				<th>電話:</th>
 				<td><input type="TEXT" name="empPhone" size="10"
-					value="<%=(empVO == null) ? "" : empVO.getEmpPhone()%>" /></td>
+					value="<%=empVO.getEmpPhone()%>" /></td>
 			</tr>
 			<tr>
 				<th>地址:</th>
 				<td><input type="TEXT" name="empAddress" size="50"
-					value="<%=(empVO == null) ? "" : empVO.getEmpAddress()%>" /></td>
+					value="<%=empVO.getEmpAddress()%>" /></td>
 			</tr>
 
 			<tr>
 				<th>帳號:</th>
 				<td><input type="TEXT" name="empAcc" size="20"
-					value="<%=(empVO == null) ? "" : empVO.getEmpAcc()%>" /></td>
+					value="<%=empVO.getEmpAcc()%>" /></td>
 			</tr>
 
 			<tr>
 				<th>密碼:</th>
 				<td><input type="password" name="empPwd" size="20"
-					value="<%=(empVO == null) ? "" : empVO.getEmpPwd()%>" /></td>
+					value="<%=empVO.getEmpPwd()%>" /></td>
 			</tr>
 
 			<tr>
 				<th>到職日:</th>
-				<td><input name="hiredate" id="f_date2" type="text"></td>
+				<td><input name="hiredate" id="f_date2" type="text"
+					value="<%=empVO.getHiredate()%>" /></td>
+			</tr>
+
+			<tr>
+				<th>離職日:</th>
+				<td><input name="quitdate" id="f_date3" type="text"
+					value="<%=empVO.getQuitdate()%>" /></td>
 			</tr>
 
 
@@ -123,25 +133,28 @@ th, td {
 			<tr>
 				<th>員工狀態:</th>
 				<td><input type="text" name="empStatus" size="3"
-					value="<%=(empVO == null) ? "1" : empVO.getEmpStatus()%>" /></td>
+					value="<%=empVO.getEmpStatus()%>" /></td>
 			</tr>
 
 			<tr>
 				<th>員工照片:</th>
 				<td><input type="file" name="empPic" class="upl">
-				<div>
-				<img class="preview" style="max-width: 150px; max-height: 150px;">
-				<div class="size"></div>
-				</div>
+					<div>
+						<img class="preview" style="max-width: 150px; max-height: 150px;">
+						<div class="size"></div>
+					</div>
 				<td>
 			</tr>
 
 
 
 
+
+
 		</table>
-		<br> <input type="hidden" name="action" value="insert"> <input
-			type="submit" value="送出新增">
+		<br> <input type="hidden" name="action" value="update"> <input
+			type="hidden" name="empID" value="<%=empVO.getEmpID()%>"> <input
+			type="submit" value="送出修改">
 	</FORM>
 </body>
 
@@ -167,6 +180,14 @@ th, td {
 	}
 %>
 
+<%
+	java.sql.Date quitdate = null;
+	try {
+		quitdate = empVO.getQuitdate(); //非空值存到Quitdate
+	} catch (Exception e) {
+		quitdate = null;
+	}
+%>
 
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.css" />
@@ -186,6 +207,7 @@ th, td {
 </style>
 
 <script>
+
 $(function (){
 	 
     function format_float(num, pos)
@@ -215,26 +237,40 @@ $(function (){
     
 })
 
-        $.datetimepicker.setLocale('zh');
-        $('#f_date1').datetimepicker({
-	       theme: '',              //theme: 'dark',
-	       timepicker:false,       //timepicker:true,
-	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=empBirth%>', // value:   new Date(),
-           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-           startDate:	            '1980/01/01',  // 起始日
-           //minDate:               '-1970-01-01', // 去除今日(不含)之前
-           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
-        });
-        
-        $.datetimepicker.setLocale('zh');
-        $('#f_date2').datetimepicker({
-	       theme: '',              //theme: 'dark',
-	       timepicker:false,       //timepicker:true,
-	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=hiredate%>', // value:   new Date(),
+
+$.datetimepicker.setLocale('zh');
+$('#f_date1').datetimepicker({
+   theme: '',              //theme: 'dark',
+   timepicker:false,       //timepicker:true,
+   step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+   format:'Y-m-d',         //format:'Y-m-d H:i:s',
+   value: '<%=empBirth%>', // value:   new Date(),
+   //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+   //startDate:	            '1980/01/01',  // 起始日
+   //minDate:               '-1970-01-01', // 去除今日(不含)之前
+   //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+});
+
+$.datetimepicker.setLocale('zh');
+$('#f_date2').datetimepicker({
+   theme: '',              //theme: 'dark',
+   timepicker:false,       //timepicker:true,
+   step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+   format:'Y-m-d',         //format:'Y-m-d H:i:s',
+   value: '<%=hiredate%>', // value:   new Date(),
+		//disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+		//startDate:	            '2017/07/10',  // 起始日
+		//minDate:               '-1970-01-01', // 去除今日(不含)之前
+		//maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+	});
+	
+$.datetimepicker.setLocale('zh');
+$('#f_date3').datetimepicker({
+   theme: '',              //theme: 'dark',
+   timepicker:false,       //timepicker:true,
+   step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+   format:'Y-m-d',         //format:'Y-m-d H:i:s',
+   value: '<%=quitdate%>', // value:   new Date(),
 	//disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
 	//startDate:	            '2017/07/10',  // 起始日
 	//minDate:               '-1970-01-01', // 去除今日(不含)之前

@@ -23,124 +23,255 @@ public class EmpServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-			
-//		if ("getOne_For_Update".equals(action)) { // 來自listAllEmp.jsp的請求
-//
-//			List<String> errorMsgs = new LinkedList<String>();
-//			// Store this set in the request scope, in case we need to
-//			// send the ErrorPage view.
-//			req.setAttribute("errorMsgs", errorMsgs);
-//			
-//			try {
-//				/***************************1.接收請求參數****************************************/
-//				Integer empID = new Integer(req.getParameter("empID"));
-//				
-//				/***************************2.開始查詢資料****************************************/
-//				EmpService empSvc = new EmpService();
-//				EmpVO empVO = empSvc.getOneEmp(empID);
-//								
-//				/***************************3.查詢完成,準備轉交(Send the Success view)************/
-//				req.setAttribute("empVO", empVO);         // 資料庫取出的empVO物件,存入req
-//				String url = "/emp/update_emp_input.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
-//				successView.forward(req, res);
-//
-//				/***************************其他可能的錯誤處理**********************************/
-//			} catch (Exception e) {
-//				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/emp/listAllEmp.jsp");
-//				failureView.forward(req, res);
-//			}
-//		}
+		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String str = req.getParameter("empID");
+				if (str == null || (str.trim()).length() == 0) {
+					errorMsgs.add("請輸入員工編號");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/emp/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				Integer empID = null;
+				try {
+					empID = new Integer(str);
+				} catch (Exception e) {
+					errorMsgs.add("員工編號格式不正確");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/emp/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************2.開始查詢資料*****************************************/
+				EmpService empSvc = new EmpService();
+				EmpVO empVO = empSvc.getOneEmp(empID);
+				if (empVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/emp/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("empVO", empVO); // 資料庫取出的empVO物件,存入req
+				String url = "/back-end/emp/listOneEmp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/emp/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
 		
-//		
-//		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
-//			
-//			List<String> errorMsgs = new LinkedList<String>();
-//			// Store this set in the request scope, in case we need to
-//			// send the ErrorPage view.
-//			req.setAttribute("errorMsgs", errorMsgs);
-//		
-//			try {
-//				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-//				Integer empno = new Integer(req.getParameter("empno").trim());
-//				
-//				String ename = req.getParameter("ename");
-//				String enameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
-//				if (ename == null || ename.trim().length() == 0) {
-//					errorMsgs.add("員工姓名: 請勿空白");
-//				} else if(!ename.trim().matches(enameReg)) { //以下練習正則(規)表示式(regular-expression)
-//					errorMsgs.add("員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
-//	            }
-//				
-//				String job = req.getParameter("job").trim();
-//				if (job == null || job.trim().length() == 0) {
-//					errorMsgs.add("職位請勿空白");
-//				}	
-//				
-//				java.sql.Date hiredate = null;
-//				try {
-//					hiredate = java.sql.Date.valueOf(req.getParameter("hiredate").trim());
-//				} catch (IllegalArgumentException e) {
-//					hiredate=new java.sql.Date(System.currentTimeMillis());
-//					errorMsgs.add("請輸入日期!");
-//				}
-//
-//				Double sal = null;
-//				try {
-//					sal = new Double(req.getParameter("sal").trim());
-//				} catch (NumberFormatException e) {
-//					sal = 0.0;
-//					errorMsgs.add("薪水請填數字.");
-//				}
-//
-//				Double comm = null;
-//				try {
-//					comm = new Double(req.getParameter("comm").trim());
-//				} catch (NumberFormatException e) {
-//					comm = 0.0;
-//					errorMsgs.add("獎金請填數字.");
-//				}
-//
-//				Integer deptno = new Integer(req.getParameter("deptno").trim());
-//
-//				EmpVO empVO = new EmpVO();
-//				empVO.setEmpno(empno);
-//				empVO.setEname(ename);
-//				empVO.setJob(job);
-//				empVO.setHiredate(hiredate);
-//				empVO.setSal(sal);
-//				empVO.setComm(comm);
-//				empVO.setDeptno(deptno);
-//
-//				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也存入req
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/emp/update_emp_input.jsp");
-//					failureView.forward(req, res);
-//					return; //程式中斷
-//				}
-//				
-//				/***************************2.開始修改資料*****************************************/
-//				EmpService empSvc = new EmpService();
-//				empVO = empSvc.updateEmp(empno, ename, job, hiredate, sal,comm, deptno);
-//			
-//				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-//				req.setAttribute("empVO", empVO); // 資料庫update成功後,正確的的empVO物件,存入req
-//				String url = "/emp/listOneEmp.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-//				successView.forward(req, res);
-//
-//				/***************************其他可能的錯誤處理*************************************/
-//			} catch (Exception e) {
-//				errorMsgs.add("修改資料失敗:"+e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/emp/update_emp_input.jsp");
-//				failureView.forward(req, res);
-//			}
-//		}
+
+		
+			
+		if ("getOne_For_Update".equals(action)) { // 來自listAllEmp.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				Integer empID = new Integer(req.getParameter("empID"));
+				
+				/***************************2.開始查詢資料****************************************/
+				EmpService empSvc = new EmpService();
+				EmpVO empVO = empSvc.getOneEmp(empID);
+								
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("empVO", empVO);         // 資料庫取出的empVO物件,存入req
+				String url = "/back-end/emp/update_emp_input.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/emp/listAllEmp.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		
+		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+		
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				Integer empID = new Integer(req.getParameter("empID").trim());
+				
+				String empName = req.getParameter("empName");
+				String empNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+				if (empName == null || empName.trim().length() == 0) {
+					errorMsgs.add("員工姓名: 請勿空白");
+				} else if(!empName.trim().matches(empNameReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+	            }
+				
+				
+				String empGender = req.getParameter("empGender");
+				if (empGender == null) {
+					empGender = "男";
+					errorMsgs.add("請選擇一個性別");
+				}
+				
+				java.sql.Date empBirth = null;
+				try {
+					//將前端日期字串轉成JAVA Date物件
+					empBirth = java.sql.Date.valueOf(req.getParameter("empBirth").trim());
+				} catch (IllegalArgumentException e) {
+					//例外把日期設為今天日期
+					empBirth=new java.sql.Date(System.currentTimeMillis());
+					errorMsgs.add("請輸入日期!");
+				}
+				
+				
+				String empJob = req.getParameter("empJob").trim();
+				if (empJob == null || empJob.trim().length() == 0) {
+					errorMsgs.add("職位請勿空白");
+				}
+				
+				String empPhone = req.getParameter("empPhone").trim();
+				String empPhoneReg = "^[(0-9)]{9,11}$";
+				if (empPhone == null || empPhone.trim().length() == 0) {
+					errorMsgs.add("電話請勿空白");
+				}else if(!empPhone.trim().matches(empPhoneReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("電話只能是數字 , 且長度不能大於11碼");
+	            }
+				
+				String empAddress = req.getParameter("empAddress").trim();
+				if (empAddress == null || empAddress.trim().length() == 0) {
+					errorMsgs.add("地址請勿空白");
+				}
+				
+				String empAcc = req.getParameter("empAcc").trim();
+				if (empAcc == null || empAcc.trim().length() == 0) {
+					errorMsgs.add("帳號請勿空白");
+				}
+				
+				String empPwd = req.getParameter("empPwd").trim();
+				if (empPwd == null || empPwd.trim().length() == 0) {
+					errorMsgs.add("密碼請勿空白");
+				}
+				
+
+				//上傳圖片
+				byte[] empPic = null;
+				Part part = req.getPart("empPic");
+				InputStream in = part.getInputStream();
+			if(in.available()>0) {	
+				empPic = new byte[in.available()];
+				in.read(empPic);
+				in.close();
+			} else {
+				EmpService empSvc = new EmpService();
+				EmpVO empVO = empSvc.getOneEmp(empID);
+				empPic = empVO.getEmpPic();
+			}
+				
+
+			
+				java.sql.Date hiredate = null;
+				try {
+					//將前端日期字串轉成JAVA Date物件
+					hiredate = java.sql.Date.valueOf(req.getParameter("hiredate").trim());
+				} catch (IllegalArgumentException e) {
+					//例外把日期設為今天日期
+					hiredate=new java.sql.Date(System.currentTimeMillis());
+					errorMsgs.add("請輸入日期!");
+				}
+				
+				java.sql.Date quitdate = null;
+				try {
+					//將前端日期字串轉成JAVA Date物件
+					quitdate = java.sql.Date.valueOf(req.getParameter("quitdate").trim());
+				} catch (IllegalArgumentException e) {
+					//例外把日期設為今天日期
+					
+					errorMsgs.add("請輸入日期!");
+				}
+				
+				
+				
+				Integer empStatus = null;
+				try {
+					empStatus = new Integer(req.getParameter("empStatus").trim());
+				} catch (NumberFormatException e) {
+					empStatus = 1;
+					errorMsgs.add("狀態請填數字1~3");
+				}
+
+				EmpVO empVO = new EmpVO();
+				empVO.setEmpID(empID);
+				empVO.setEmpName(empName);
+				empVO.setEmpGender(empGender);
+				empVO.setEmpBirth(empBirth);
+				empVO.setEmpJob(empJob);
+				empVO.setEmpPhone(empPhone);
+				empVO.setEmpAddress(empAddress);
+				empVO.setEmpAcc(empAcc);
+				empVO.setEmpPwd(empPwd);
+				empVO.setEmpPic(empPic);
+				empVO.setHiredate(hiredate);
+				empVO.setQuitdate(quitdate);
+				empVO.setEmpStatus(empStatus);
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/emp/update_emp_input.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始修改資料*****************************************/
+				EmpService empSvc = new EmpService();
+				empVO = empSvc.updateEmp(empID, empName, empGender, empBirth, empJob,empPhone, empAddress,empAcc,empPwd,empPic,hiredate,quitdate,empStatus);
+			
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("empVO", empVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				String url = "/back-end/emp/listOneEmp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/emp/update_emp_input.jsp");
+				failureView.forward(req, res);
+			}
+		}
 
         if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
 			
@@ -205,9 +336,13 @@ public class EmpServlet extends HttpServlet {
 					errorMsgs.add("密碼請勿空白");
 				}
 				
-				//這行有問題
-				byte[] empPic =null;
-				empPic = getPictureByteArray("C:\\c.jpg");
+				//上傳圖片
+				Part part = req.getPart("empPic");
+				InputStream in = part.getInputStream();
+				byte[] empPic = new byte[in.available()];
+				in.read(empPic);
+				in.close();
+
 				
 
 			
@@ -276,23 +411,39 @@ req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也�
 				failureView.forward(req, res);
 			}
 		}
+        
+        if ("delete".equals(action)) { // 來自listAllEmp.jsp
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+	
+			try {
+				/***************************1.接收請求參數***************************************/
+				Integer empID = new Integer(req.getParameter("empID"));//前端取得的empno是string，存入前先轉成Integer跟VO一致
+				
+				/***************************2.開始刪除資料***************************************/
+				EmpService empSvc = new EmpService();
+				empSvc.deleteEmp(empID);
+				
+				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
+				String url = "/back-end/emp/listAllEmp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("刪除資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/emp/listAllEmp.jsp");
+				failureView.forward(req, res);
+			}
+		}
 		
 		
 	
 	}
-	public static byte[] getPictureByteArray(String path) throws IOException {
-		File file = new File(path);
-		FileInputStream fis = new FileInputStream(file);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		byte[] buffer = new byte[8192];
-		int i;
-		while ((i = fis.read(buffer)) != -1) {
-			baos.write(buffer, 0, i);
-		}
-		baos.close();
-		fis.close();
 
-		return baos.toByteArray();
-	}
 	
 }

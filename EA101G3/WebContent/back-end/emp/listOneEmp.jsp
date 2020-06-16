@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ page import="com.emp.model.*"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
 <%
@@ -31,37 +32,48 @@ h4 {
 
 <style>
 table {
-	width: 600px;
+	width: 100%;
 	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
+	border: 1px solid #CCCCFF;
 }
 
 table, th, td {
-	border: 1px solid #CCCCFF;
+	text-align: center;
+}
+
+th {
+	padding: 5px;
+	background-color: lightcoral;
 }
 
 th, td {
 	padding: 5px;
-	text-align: center;
+}
+
+.mainTitle {
+	letter-spacing: 8px;
+	color: #42454C;
+	font-weight: bold;
+	font-size: 28px;
+	padding-left: 20px;
+}
+/*主內容標題下分隔線*/
+.mainTitlehr {
+	border: 2px solid lightcoral;
 }
 </style>
 
 </head>
 <body bgcolor='white'>
 
-	<h4>此頁暫練習採用 Script 的寫法取值:</h4>
-	<table id="table-1">
-		<tr>
-			<td>
-				<h3>員工資料 - ListOneEmp.jsp</h3>
-				<h4>
-					<a href="select_page.jsp"><img src="images/back1.gif"
-						width="100" height="32" border="0">回首頁</a>
-				</h4>
-			</td>
-		</tr>
-	</table>
+
+	<span class="mainTitle">員工資料</span>
+
+	<a href="select_page.jsp">回首頁</a>
+
+	<hr class="mainTitlehr">
 
 	<table>
 		<tr>
@@ -78,14 +90,16 @@ th, td {
 			<th>到職日</th>
 			<th>離職日</th>
 			<th>員工狀態</th>
+			<th>修改</th>
+			<th>刪除</th>
 		</tr>
 		<tr>
 			<td>${empVO.empID}</td>
 			<td>${empVO.empName}</td>
 			<td>${empVO.empGender}</td>
-			<%
-				//<td>${empVO.hiredate}</td> 原本寫法， 下面改用JSTL
-			%>
+			
+		    <% // <td>${empVO.empBirth}</td> 原本寫法， 下面改用JSTL %>
+			
 			<td><fmt:formatDate value="${empVO.empBirth}"
 					pattern="yyyy/MM/dd" /></td>
 
@@ -94,10 +108,31 @@ th, td {
 			<td>${empVO.empAddress}</td>
 			<td>${empVO.empAcc}</td>
 			<td>${empVO.empPwd}</td>
-			<td>${empVO.empPic}</td>
-			<td>${empVO.hiredate}</td>
-			<td>${empVO.quitdate}</td>
+			<td><img src="<%= request.getContextPath()%>/back-end/emp/img.do?empID=${empVO.empID}"></td>
+			<td><fmt:formatDate value="${empVO.hiredate}"
+					pattern="yyyy/MM/dd" /></td>
+			<td><fmt:formatDate value="${empVO.quitdate}"
+					pattern="yyyy/MM/dd" /></td>
 			<td>${empVO.empStatus}</td>
+			<td>
+					<FORM METHOD="post"
+						ACTION="<%=request.getContextPath()%>/back-end/emp/emp.do"
+						style="margin-bottom: 0px;">
+						<input type="submit" value="修改"> <input type="hidden"
+							name="empID" value="${empVO.empID}"> <input type="hidden"
+							name="action" value="getOne_For_Update">
+					</FORM>
+				</td>
+				<td>
+					<FORM METHOD="post"
+						ACTION="<%=request.getContextPath()%>/back-end/emp/emp.do"
+						style="margin-bottom: 0px;">
+						<input type="submit" value="刪除"> <input type="hidden"
+							name="empID" value="${empVO.empID}"> <input type="hidden"
+							name="action" value="delete">
+					</FORM>
+				</td>
+			
 		</tr>
 	</table>
 

@@ -26,18 +26,34 @@
     display: inline;
      text-align: center;
   }
+  
+     .mainTitle{
+     letter-spacing: 8px;
+     color: #42454C;
+     font-weight: bold;
+     font-size: 28px;
+     padding-left: 20px;
+
+   }
+
+   /*主內容標題下分隔線*/
+   .mainTitlehr {
+     border: 2px solid lightcoral;
+
+
+   }
 </style>
 
 </head>
 <body bgcolor='white'>
 
-<table id="table-1">
-   <tr><td><h3>IBM Emp: Home</h3><h4>( MVC )</h4></td></tr>
-</table>
 
-<p>This is the Home page for IBM Emp: Home</p>
+   <span class="mainTitle">員工管理</span>
 
-<h3>資料查詢:</h3>
+	<hr class="mainTitlehr">
+
+
+
 	
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -50,39 +66,21 @@
 </c:if>
 
 <ul>
-  <li><a href='listAllEmp.jsp'>List</a> all Emps.  <br><br></li>
+  <li><a href='listAllEmp.jsp'>查詢全部員工  </a><br><br></li>
   
   
-  <li>
-    <FORM METHOD="post" ACTION="emp.do" >
-        <b>輸入員工編號 (如7001):</b>
-        <input type="text" name="empID">
-        <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="送出">
-    </FORM>
-  </li>
+
 
   <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService" />
    
-  <li>
-     <FORM METHOD="post" ACTION="emp.do" >
-       <b>選擇員工編號:</b>
-       <select size="1" name="empID">
-         <c:forEach var="empVO" items="${empSvc.all}" > 
-          <option value="${empVO.empID}">${empVO.empID}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-    </FORM>
-  </li>
+  
   
   <li>
      <FORM METHOD="post" ACTION="emp.do" >
-       <b>選擇員工姓名:</b>
+       <b>依員工姓名查詢:</b>
        <select size="1" name="empID">
          <c:forEach var="empVO" items="${empSvc.all}" > 
-          <option value="${empVO.empName}">${empVO.empName}
+          <option value="${empVO.empID}">${empVO.empName}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
@@ -92,11 +90,13 @@
 </ul>
 
 
-<h3>員工管理</h3>
+
 
 <ul>
-  <li><a href='addEmp.jsp'>Add</a> a new Emp.</li>
+  <li><a href='addEmp.jsp'>新增員工</a></li>
 </ul>
+
+
 
 </body>
 </html>

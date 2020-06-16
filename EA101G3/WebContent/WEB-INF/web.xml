@@ -24,5 +24,14 @@
     <url-pattern>/back-end/emp/emp.do</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>EmpShowImg</servlet-name>
+    <servlet-class>com.emp.controller.EmpShowImg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmpShowImg</servlet-name>
+    <url-pattern>/back-end/emp/img.do</url-pattern>
+  </servlet-mapping>
+  
 
 </web-app>

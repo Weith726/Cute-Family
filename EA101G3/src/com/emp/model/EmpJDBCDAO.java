@@ -190,14 +190,15 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects
 				empVO = new EmpVO();
+				empVO.setEmpID(rs.getInt("empID"));
 				empVO.setEmpName(rs.getString("empName"));
 				empVO.setEmpGender(rs.getString("empGender"));
 				empVO.setEmpBirth(rs.getDate("empBirth"));
 				empVO.setEmpJob(rs.getString("empJob"));
 				empVO.setEmpPhone(rs.getString("empPhone"));
 				empVO.setEmpAddress(rs.getString("empAddress"));
-				empVO.setEmpAcc(rs.getString("empJob"));
-				empVO.setEmpPwd(rs.getString("empPhone"));
+				empVO.setEmpAcc(rs.getString("empAcc"));
+				empVO.setEmpPwd(rs.getString("empPwd"));
 				empVO.setEmpPic(rs.getBytes("empPic"));
 				empVO.setHiredate(rs.getDate("hiredate"));
 				empVO.setQuitdate(rs.getDate("quitdate"));
@@ -262,8 +263,8 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 				empVO.setEmpJob(rs.getString("empJob"));
 				empVO.setEmpPhone(rs.getString("empPhone"));
 				empVO.setEmpAddress(rs.getString("empAddress"));
-				empVO.setEmpAcc(rs.getString("empJob"));
-				empVO.setEmpPwd(rs.getString("empPhone"));
+				empVO.setEmpAcc(rs.getString("empAcc"));
+				empVO.setEmpPwd(rs.getString("empPwd"));
 				empVO.setEmpPic(rs.getBytes("empPic"));
 				empVO.setHiredate(rs.getDate("hiredate"));
 				empVO.setQuitdate(rs.getDate("quitdate"));

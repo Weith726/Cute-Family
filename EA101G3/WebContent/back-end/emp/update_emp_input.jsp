@@ -12,19 +12,28 @@
 
 <style>
 table {
-	width: 100%;
+width:100%;
+
 	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
+	border: 7px solid;
+	border-color:rgb(100,100,100,0.2);
+	
 }
 
 th {
-	width: 120px;
+
+
 	text-align: right;
+	width:100px;
 }
 
 th, td {
+
 	padding: 5px;
+/* 	border: 1px solid black; */
+	height:40px;
 }
 
 .mainTitle {
@@ -64,48 +73,51 @@ th, td {
 		enctype="multipart/form-data">
 		<table>
 			<tr>
-				<th>員工編號:<font color=red><b>*</b></font></th>
+				<th>員工編號<font color=red><b>*</b></font></th>
 				<td><%=empVO.getEmpID()%></td>
 			</tr>
 
 			<tr>
-				<th>員工姓名:</th>
+				<th>員工姓名</th>
 				<td><input type="TEXT" name="empName" size="10"
 					value="<%=empVO.getEmpName()%>" /></td>
 			</tr>
 
 			<tr>
-				<th>性別:</th>
-				<td><input type="radio" id="male" name="empGender" value="男"
-					checked> <label for="male">男</label> <input type="radio"
-					id="female" name="empGender" value="女"> <label for="female">女</label><br></td>
+				<th>性別</th>
+				<td>	
+				<input type="radio" id="male" name="empGender" value="男" ${(empVO.empGender=='男')?'checked':'' }> 
+				<label for="male">男</label> 
+				<input type="radio" id="female" name="empGender" value="女"  ${(empVO.empGender=='女')?'checked':'' }> 
+				<label for="female">女</label><br>
+				</td>
 			</tr>
 
 			<tr>
-				<th>生日:</th>
+				<th>生日</th>
 				<td><input name="empBirth" id="f_date1" type="text"
 					value="<%=empVO.getEmpBirth()%>" /></td>
 			</tr>
 
 			<tr>
-				<th>職位:</th>
+				<th>職位</th>
 				<td><input type="TEXT" name="empJob" size="10"
 					value="<%=empVO.getEmpJob()%>" /></td>
 			</tr>
 
 			<tr>
-				<th>電話:</th>
+				<th>電話</th>
 				<td><input type="TEXT" name="empPhone" size="10"
 					value="<%=empVO.getEmpPhone()%>" /></td>
 			</tr>
 			<tr>
-				<th>地址:</th>
+				<th>地址</th>
 				<td><input type="TEXT" name="empAddress" size="50"
 					value="<%=empVO.getEmpAddress()%>" /></td>
 			</tr>
 
 			<tr>
-				<th>帳號:</th>
+				<th>帳號</th>
 				<td><input type="TEXT" name="empAcc" size="20"
 					value="<%=empVO.getEmpAcc()%>" /></td>
 			</tr>
@@ -117,13 +129,13 @@ th, td {
 			</tr>
 
 			<tr>
-				<th>到職日:</th>
+				<th>到職日</th>
 				<td><input name="hiredate" id="f_date2" type="text"
 					value="<%=empVO.getHiredate()%>" /></td>
 			</tr>
 
 			<tr>
-				<th>離職日:</th>
+				<th>離職日</th>
 				<td><input name="quitdate" id="f_date3" type="text"
 					value="<%=empVO.getQuitdate()%>" /></td>
 			</tr>
@@ -131,13 +143,18 @@ th, td {
 
 
 			<tr>
-				<th>員工狀態:</th>
-				<td><input type="text" name="empStatus" size="3"
-					value="<%=empVO.getEmpStatus()%>" /></td>
+				<th>員工狀態</th>
+				<td><select name="empStatus">
+　						<option value="1" ${(empVO.empStatus=='1')? 'selected':''}>在職中</option>
+　						<option value="2" ${(empVO.empStatus=='2')? 'selected':''}>休假中</option>
+　						<option value="3" ${(empVO.empStatus=='3')? 'selected':''}>已離職</option>
+
+					</select>
+					</td>
 			</tr>
 
 			<tr>
-				<th>員工照片:</th>
+				<th>員工照片</th>
 				<td><input type="file" name="empPic" class="upl">
 					<div>
 						<img class="preview" style="max-width: 150px; max-height: 150px;">

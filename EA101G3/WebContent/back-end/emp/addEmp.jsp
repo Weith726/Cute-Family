@@ -12,22 +12,41 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>員工資料新增 - addEmp.jsp</title>
 
+<%
+	// 	String empGender = null;
+	// 	try {
+	// 		empGender = empVO.getEmpGender(); 
+	// 	} catch (Exception e) {
+	// 		empGender = "男"; //空值給男
+
+	// 	}
+%>
 
 <style>
+
 table {
-	width: 100%;
+width:100%;
+
 	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
+	border: 7px solid;
+	border-color:rgb(100,100,100,0.2);
+	
 }
 
 th {
-	width: 120px;
+
+
 	text-align: right;
+	width:100px;
 }
 
 th, td {
+
 	padding: 5px;
+/* 	border: 1px solid black; */
+	height:40px;
 }
 
 .mainTitle {
@@ -67,73 +86,94 @@ th, td {
 		enctype="multipart/form-data">
 		<table>
 			<tr>
-				<th>員工姓名:</th>
-				<td><input type="TEXT" name="empName" size="10"
-					value="<%=(empVO == null) ? "" : empVO.getEmpName()%>" /></td>
-			</tr>
-
-			<tr>
-				<th>性別:</th>
-				<td><input type="radio" id="male" name="empGender" value="男"
-					checked> <label for="male">男</label> <input type="radio"
-					id="female" name="empGender" value="女"> <label for="female">女</label><br></td>
-			</tr>
-
-			<tr>
-				<th>生日:</th>
-				<td><input name="empBirth" id="f_date1" type="text"></td>
-			</tr>
-
-			<tr>
-				<th>職位:</th>
-				<td><input type="TEXT" name="empJob" size="10"
-					value="<%=(empVO == null) ? "" : empVO.getEmpJob()%>" /></td>
-			</tr>
-
-			<tr>
-				<th>電話:</th>
-				<td><input type="TEXT" name="empPhone" size="10"
-					value="<%=(empVO == null) ? "" : empVO.getEmpPhone()%>" /></td>
-			</tr>
-			<tr>
-				<th>地址:</th>
-				<td><input type="TEXT" name="empAddress" size="50"
-					value="<%=(empVO == null) ? "" : empVO.getEmpAddress()%>" /></td>
-			</tr>
-
-			<tr>
-				<th>帳號:</th>
+				<th>帳號</th>
 				<td><input type="TEXT" name="empAcc" size="20"
 					value="<%=(empVO == null) ? "" : empVO.getEmpAcc()%>" /></td>
 			</tr>
 
 			<tr>
-				<th>密碼:</th>
+				<th>密碼</th>
 				<td><input type="password" name="empPwd" size="20"
 					value="<%=(empVO == null) ? "" : empVO.getEmpPwd()%>" /></td>
 			</tr>
+		
+		
+			<tr>
+				<th>員工姓名</th>
+				<td><input type="TEXT" name="empName" size="10"
+					value="<%=(empVO == null) ? "" : empVO.getEmpName()%>" /></td>
+			</tr>
 
 			<tr>
-				<th>到職日:</th>
+				<th>性別</th>
+				<td><input type="radio" id="male" name="empGender" value="男"
+					${(empVO.empGender=='男')?'checked':'' }> <label for="male">男</label>
+					<input type="radio" id="female" name="empGender" value="女"
+					${(empVO.empGender=='女')?'checked':'' }> <label
+					for="female">女</label><br> 
+					
+					<!-- 欲使用下面寫法要先判斷empVO == null -->
+
+					<%-- 				<input type="radio" id="male" name="empGender" value="男" <%=(empVO.getEmpGender()=="男")?"checked":""%> />  --%>
+					<!-- 				<label for="male">男生</label>  --> <%-- 	<input type="radio" id="male" name="empGender" value="女" <%=(empVO.getEmpGender()=="女")?"checked":""%> />  --%>
+					<!-- 				<label for="female">女</label><br> -->
+					</td>
+			</tr>
+
+
+			<tr>
+				<th>生日</th>
+				<td><input name="empBirth" id="f_date1" type="text"></td>
+			</tr>
+
+			<tr>
+				<th>職位</th>
+				<td><input type="TEXT" name="empJob" size="10"
+					value="<%=(empVO == null) ? "" : empVO.getEmpJob()%>" /></td>
+			</tr>
+
+			<tr>
+				<th>電話</th>
+				<td><input type="TEXT" name="empPhone" size="10"
+					value="<%=(empVO == null) ? "" : empVO.getEmpPhone()%>" /></td>
+			</tr>
+			<tr>
+				<th>地址</th>
+				<td><input type="TEXT" name="empAddress" size="40"
+					value="<%=(empVO == null) ? "" : empVO.getEmpAddress()%>" /></td>
+			</tr>
+
+			
+
+			<tr>
+				<th>到職日</th>
 				<td><input name="hiredate" id="f_date2" type="text"></td>
 			</tr>
 
 
 
 			<tr>
-				<th>員工狀態:</th>
-				<td><input type="text" name="empStatus" size="3"
-					value="<%=(empVO == null) ? "1" : empVO.getEmpStatus()%>" /></td>
+				<th>員工狀態</th>
+				<td>
+<!-- 				<input type="text" name="empStatus" size="4" -->
+<%-- 					value="<%=(empVO == null) ? "1" : empVO.getEmpStatus()%>" /> --%>
+					<select name="empStatus">
+　						<option value="1" ${(empVO.empStatus=='1')? 'selected':''}>在職中</option>
+　						<option value="2" ${(empVO.empStatus=='2')? 'selected':''}>休假中</option>
+　						<option value="3" ${(empVO.empStatus=='3')? 'selected':''}>已離職</option>
+
+					</select>
+					
+					</td>
 			</tr>
 
 			<tr>
-				<th>員工照片:</th>
+				<th>員工照片</th>
 				<td><input type="file" name="empPic" class="upl">
-				<div>
-				<img class="preview" style="max-width: 150px; max-height: 150px;">
-				<div class="size"></div>
-				</div>
-				<td>
+					<div>
+						<img class="preview" style="max-width: 150px; max-height: 150px;">
+						<div class="size"></div>
+					</div></td>
 			</tr>
 
 
@@ -146,7 +186,6 @@ th, td {
 </body>
 
 
-
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
 <%
@@ -154,7 +193,8 @@ th, td {
 	try {
 		empBirth = empVO.getEmpBirth(); //非空值存到hiredate
 	} catch (Exception e) {
-		empBirth = new java.sql.Date(System.currentTimeMillis()); //空值給今天日期
+		empBirth = java.sql.Date.valueOf("1980-01-01"); //空值給今天日期
+
 	}
 %>
 
@@ -220,10 +260,10 @@ $(function (){
 	       theme: '',              //theme: 'dark',
 	       timepicker:false,       //timepicker:true,
 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=empBirth%>', // value:   new Date(),
+	       format:'Y-m-d',          //format:'Y-m-d H:i:s',
+	       value: '<%=empBirth%>' 
            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-           startDate:	            '1980/01/01',  // 起始日
+           //startDate:	            '1980/01/01',  // 起始日
            //minDate:               '-1970-01-01', // 去除今日(不含)之前
            //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
         });
@@ -234,7 +274,7 @@ $(function (){
 	       timepicker:false,       //timepicker:true,
 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=hiredate%>', // value:   new Date(),
+		   value: '<%=hiredate%>'
 	//disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
 	//startDate:	            '2017/07/10',  // 起始日
 	//minDate:               '-1970-01-01', // 去除今日(不含)之前

@@ -141,8 +141,7 @@ public class EmpServlet extends HttpServlet {
 				
 				String empGender = req.getParameter("empGender");
 				if (empGender == null) {
-					empGender = "男";
-					errorMsgs.add("請選擇一個性別");
+					errorMsgs.add("請選擇性別");
 				}
 				
 				java.sql.Date empBirth = null;
@@ -217,8 +216,8 @@ public class EmpServlet extends HttpServlet {
 					quitdate = java.sql.Date.valueOf(req.getParameter("quitdate").trim());
 				} catch (IllegalArgumentException e) {
 					//例外把日期設為今天日期
+					quitdate = null;
 					
-					errorMsgs.add("請輸入日期!");
 				}
 				
 				
@@ -293,17 +292,18 @@ public class EmpServlet extends HttpServlet {
 				
 				String empGender = req.getParameter("empGender");
 				if (empGender == null) {
-					empGender = "男";
-					errorMsgs.add("請選擇一個性別");
+					errorMsgs.add("請選擇性別");
+					
 				}
+				
 				
 				java.sql.Date empBirth = null;
 				try {
 					//將前端日期字串轉成JAVA Date物件
 					empBirth = java.sql.Date.valueOf(req.getParameter("empBirth").trim());
 				} catch (IllegalArgumentException e) {
-					//例外把日期設為今天日期
-					empBirth=new java.sql.Date(System.currentTimeMillis());
+					//例外把日期設為1980-01-01
+					empBirth = java.sql.Date.valueOf("1980-01-01");
 					errorMsgs.add("請輸入日期!");
 				}
 				
@@ -405,7 +405,6 @@ req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也�
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage()+"其他的錯誤");
-				System.out.println("我的錯");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/emp/addEmp.jsp");
 				failureView.forward(req, res);
@@ -434,7 +433,8 @@ req.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也�
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.add("刪除資料失敗:"+e.getMessage());
+				errorMsgs.add("刪除資料失敗:此員工的權限未清除");
+//				errorMsgs.add("刪除資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/emp/listAllEmp.jsp");
 				failureView.forward(req, res);
